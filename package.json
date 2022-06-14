@@ -1,0 +1,14 @@
+{
+  "name": "artur",
+  "version": "1.0.0",
+  "description": "medication intakes",
+  "main": "index.js",
+  "scripts": {
+    "test": "testgo"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.1.3"
+  }
+}
