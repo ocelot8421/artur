@@ -1,23 +1,18 @@
-const keys = { id: '', time: '', day: '', medicine01: '', dose01: '', medicine02: '', dose02: '' };
+let index = "box";
+let input = document.querySelector(`div.${index}`);
+// console.log(input.innerHTML);
 
-let divTime = document.querySelector("#time");
+let fetchOptions = {
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache"
+};
 
-function getServerData(url) {
-    let fetchOptions = {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache"
-    };
-    return fetch(url, fetchOptions)
-        .then(response => response.json())
-        .catch(err => console.error(err));
-}
+fetch(`http://localhost:8080/intakes/get/1`, fetchOptions)
+    .then(response => response.json())
+    .catch(error => console.error(error))
+    .then(data => vmifuggveny(data));
 
-function start() {
-    let sg = getServerData(`http://localhost:8080/intakes/${id}`);
-    console.log(sg);
-}
-
-window.onload = () => {
-    start()
+function vmifuggveny(data) {
+    input.innerHTML = data.time;
 }

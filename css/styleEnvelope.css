@@ -1,0 +1,11 @@
+#paper {
+  margin: 3cm;
+  width: 21cm;
+  height: 14.80cm;
+}
+
+#mező {
+  border: 1cm;
+  border-color: blue;
+  margin: 2cm;
+}

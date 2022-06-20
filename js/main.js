@@ -83,8 +83,6 @@ function createButtonGroup() {
 }
 
 
-
-
 //By Peti:
 
 // async function main() {
@@ -148,6 +146,7 @@ function getRowData(tr) {
     for (let i = 0; i < inputs.length; i++) {
         data[inputs[i].name] = inputs[i].value;
     }
+    console.log(data);
     return data;
 }
 
