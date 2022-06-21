@@ -1,18 +1,34 @@
-let index = "box";
-let input = document.querySelector(`div.${index}`);
-// console.log(input.innerHTML);
+const keys = { id: '', time: '', day: '', medicine01: '', dose01: '', medicine02: '', dose02: '' };
 
-let fetchOptions = {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache"
-};
+function getDataFromServer(url) {
+    let fetchOptions = {
+        method: "GET",
+        mode: "cors",
+        cache: "no-cache"
+    };
+    return fetch(url, fetchOptions)
+        .then(response => response.json())
+        .catch(error => console.error(error));
+}
 
-fetch(`http://localhost:8080/intakes/get/1`, fetchOptions)
-    .then(response => response.json())
-    .catch(error => console.error(error))
-    .then(data => vmifuggveny(data));
+getDataFromServer(`http://localhost:8080/intakes/get/1`)
+    .then(data => vmifuggveny(data))
+    .catch(err => console.log(err));
 
 function vmifuggveny(data) {
-    input.innerHTML = data.time;
+    let index = "box";
+    // let input = document.querySelector(`div.${index}`);
+    let inputs = document.querySelectorAll(`div.${index}`);
+    for (let key of inputs) {
+        for (let sg in data) {
+            if (key.id == sg) {
+                key.innerHTML = data[sg]
+            }
+        }
+    }
 }
+
+
+
+
+
