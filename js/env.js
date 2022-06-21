@@ -28,6 +28,11 @@ function vmifuggveny(data) {
     }
 }
 
+// const queryString = window.location.search;
+// const queryString = window.location.href; //ez mükszik :)
+const queryString = window.location.pathname;
+console.log(queryString);
+
 
 
 

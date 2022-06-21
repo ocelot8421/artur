@@ -146,7 +146,6 @@ function getRowData(tr) {
     for (let i = 0; i < inputs.length; i++) {
         data[inputs[i].name] = inputs[i].value;
     }
-    console.log(data);
     return data;
 }
 
@@ -174,8 +173,17 @@ function delRow(button) {
 function pdfEnvilope(button) {
     let tr = button.parentElement.parentElement.parentElement;
     let data = getRowData(tr);
+
+    let dataJson = JSON.stringify(data);
+    console.log(data);
+    console.log(dataJson);
+
     // window.open(`http://localhost:8080/intakes/get/${data.id}`);
+    // window.open(`envelope.html/?${data.id}`);
+    // window.open(`envelope.html/1`);
+    // window.open(`envelope.html/?1`);
     window.open(`envelope.html`);
+    // window.location(`envelope.html/1`);
 }
 
 //Set data int the whole row
@@ -202,3 +210,4 @@ function setRow(button) {
 window.onload = () => {
     startGetUsers()
 }
+
