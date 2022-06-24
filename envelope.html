@@ -8,6 +8,7 @@
     <title>Boríték</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styleEnvelope.css">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -29,22 +30,30 @@
                 <div class="col-5">
                     <table>
                         <tbody>
+
                             <tr>
-                                <th>
-                                    <div>2022.</div>
-                                </th>
-                                <th>
-                                    <div id="time" class="box">Idő hiányzik</div>
-                                </th>
+                                <th>2022.</th>
+                                <th id="month" class="box">Hónap hiányzik</th>
+                                <th id="time" class="box">Nap hiányzik</th>
                             </tr>
                         </tbody>
                     </table>
                     <table>
                         <tr>
-                            <div id="medicine01" class="box">Gyógyszer01 hiányzik</div>
+                            <td id="pieces01" class="box text-end"> Db hiányzik</td>
+                            <td>x</td>
+                            <td id="dose01" class="box text-end"> Adag1 hiányzik</td>
+                            <td>mg &nbsp;</td>
+                            <td id="medicine01" class="box">Gyógyszer01 hiányzik</td>
+
                         </tr>
                         <tr>
-                            <div id="medicine02" class="box">Gyógyszer02 hiányzik</div>
+                            <td id="pieces02" class="box text-end"> Adag2 hiányzik</td>
+                            <td>x</td>
+                            <td id="dose02" class="box text-end"> Adag2 hiányzik</td>
+                            <td>mg &nbsp;</td>
+                            <td id="medicine02" class="box">Gyógyszer02 hiányzik</td>
+
                         </tr>
                     </table>
                 </div>
@@ -66,29 +75,19 @@
                                 <th>V</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             <tr>
-                                <td>nap</td>
-                                <td>27.</td>
-                                <td>27.</td>
-                                <td>27.</td>
-                                <td>27.</td>
-                                <td>27.</td>
-                                <td>27.</td>
-                                <td>27.</td>
+                                <td id="rowDay">nap</td>
+                                <td>hiányzó dátum</td>
+                                <td>hiányzó dátum</td>
+                                <td>hiányzó dátum</td>
+                                <td>hiányzó dátum</td>
+                                <td>hiányzó dátum</td>
+                                <td>hiányzó dátum</td>
+                                <td>hiányzó dátum</td>
                             </tr>
                             <tr>
-                                <th scope="row">Reg.</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Dél</th>
+                                <th scope="row" id="rowMorning">Reg.</th>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -98,7 +97,17 @@
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row">Esti</th>
+                                <th scope="row" id="rowNoon">Dél</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" id="rowEvening">Esti</th>
                                 <td></td>
                                 <td></td>
                                 <td></td>

@@ -3,8 +3,11 @@ function takeDataFromOpenSite(dataJson) {
   window.open(`envelope.html`);
 }
 
-// console.log(window.sessionStorage.getItem('proba') + "fjgdklgjtralalala");
-
+function getTimeColumnData(k, row, input) {
+  if (k == "time") {
+    window.sessionStorage.setItem(row.id, input.value);
+  }
+}
 
 
 

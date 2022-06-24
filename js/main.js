@@ -1,5 +1,10 @@
 //Keys of data table
-const keys = { id: '', time: '', day: '', medicine01: '', dose01: '', medicine02: '', dose02: '' };
+const keys = {
+    id: '',
+    month: '', time: '', day: '',
+    medicine01: '', pieces01: '', dose01: '',
+    medicine02: '', pieces02: '', dose02: ''
+};
 
 // Get data from server.
 function getServerData(url) {
@@ -47,6 +52,13 @@ function fillDataTable(data, tableID) {
             }
             td.appendChild(input);
             tr.appendChild(td);
+
+            // if (k == "time") {
+            //     // console.log(row.id);
+            //     // console.log(input.value);
+            //     window.sessionStorage.setItem(row.id, input.value);
+            // }
+            getTimeColumnData(k, row, input);
         }
         let buttonGroup = createButtonGroup();
         tr.appendChild(buttonGroup);
@@ -148,6 +160,15 @@ function getRowData(tr) {
     }
     return data;
 }
+
+// function getNumbersFromDay(tr) {
+//     let inputs = tr.querySelectorAll("input.form-control");
+//     let data = {};
+//     for (let i = 0; i < inputs.length; i++) {
+//         data[inputs[i].name] = inputs[i].value;
+//     }
+//     return data;
+// }
 
 // Delete the whole row
 function delRow(button) {
