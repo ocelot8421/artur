@@ -169,21 +169,22 @@ function delRow(button) {
         .catch((error) => console.error(error));
 }
 
-//Get data from the row
+
 function pdfEnvilope(button) {
     let tr = button.parentElement.parentElement.parentElement;
     let data = getRowData(tr);
 
     let dataJson = JSON.stringify(data);
-    console.log(data);
-    console.log(dataJson);
+    // console.log(data);
+    // console.log(dataJson);
 
     // window.open(`http://localhost:8080/intakes/get/${data.id}`);
     // window.open(`envelope.html/?${data.id}`);
     // window.open(`envelope.html/1`);
     // window.open(`envelope.html/?1`);
-    window.open(`envelope.html`);
-    // window.location(`envelope.html/1`);
+    // window.open(`envelope.html`);
+    // window.location(`envelope.html/1`)
+    takeDataFromOpenSite(dataJson);
 }
 
 //Set data int the whole row
