@@ -1,5 +1,6 @@
 function takeDataFromOpenSite(dataJson) {
-  window.sessionStorage.setItem('transferedDatas', dataJson);
+  // window.sessionStorage.setItem('transferedDatas', dataJson);
+  sessionStorage.setItem('transferedDatas', dataJson);
   window.open(`envelope.html`);
 }
 

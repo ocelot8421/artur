@@ -1,5 +1,6 @@
 const keys = { id: '', time: '', day: '', medicine01: '', dose01: '', medicine02: '', dose02: '' };
-let data = window.sessionStorage.getItem('transferedDatas');
+// let data = window.sessionStorage.getItem('transferedDatas');
+let data = sessionStorage.getItem('transferedDatas');
 let dataJSON = JSON.parse(data);
 vmifuggveny(dataJSON);
 

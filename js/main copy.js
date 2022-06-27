@@ -74,13 +74,13 @@ function createButtonGroup() {
 
     let infoButton = createAnyElement("button", { class: "btn btn-info", onclick: "setRow(this)" });
     infoButton.innerHTML = '<i class="fa fa-refresh" aria-hidden="true"></i>';
-    // let deleteButton = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
-    // deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+    let deleteButton = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
+    deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
     let pdfButton = createAnyElement("button", { class: "btn btn-primary", onclick: "pdfEnvilope(this)" });
     pdfButton.innerHTML = '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>';
 
     group.appendChild(infoButton);
-    // group.appendChild(deleteButton);
+    group.appendChild(deleteButton);
     group.appendChild(pdfButton);
 
     let td = createAnyElement("td");
@@ -89,48 +89,48 @@ function createButtonGroup() {
 }
 
 //Create new line
-// function addNewRow(row) {
-//     let tr = createAnyElement("tr");
-//     for (let k in row) {
-//         let td = createAnyElement("td");
-//         let input = createAnyElement("input", {
-//             class: "form-control",
-//             name: k
-//         });
-//         td.appendChild(input);
-//         tr.appendChild(td);
-//     }
-//     let tdBtn = createAnyElement("td");
-//     let group = createAnyElement("div", { class: "btn btn-group" });
-//     let newBtn = createAnyElement("button", {
-//         class: "btn btn-success",
-//         onclick: "addNewIntake(this)"
-//     });
-//     newBtn.innerHTML = '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>';
-//     group.appendChild(newBtn);
-//     tdBtn.appendChild(group);
-//     tr.appendChild(tdBtn);
-//     return tr;
-// }
+function addNewRow(row) {
+    let tr = createAnyElement("tr");
+    for (let k in row) {
+        let td = createAnyElement("td");
+        let input = createAnyElement("input", {
+            class: "form-control",
+            name: k
+        });
+        td.appendChild(input);
+        tr.appendChild(td);
+    }
+    let tdBtn = createAnyElement("td");
+    let group = createAnyElement("div", { class: "btn btn-group" });
+    let newBtn = createAnyElement("button", {
+        class: "btn btn-success",
+        onclick: "addNewIntake(this)"
+    });
+    newBtn.innerHTML = '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>';
+    group.appendChild(newBtn);
+    tdBtn.appendChild(group);
+    tr.appendChild(tdBtn);
+    return tr;
+}
 
-// function addNewIntake(button) {
-//     let tr = button.parentElement.parentElement.parentElement;
-//     let data = getRowData(tr);
-//     let fetchOptions = {
-//         method: "POST",
-//         mode: "cors",
-//         cache: "no-cache",
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(data)
-//     };
-//     fetch(`http://localhost:8080/intakes/add`, fetchOptions)
-//         .then(response => response.json())
-//         .catch((error) => console.error(error))
-//         .then(() => startGetUsers())
-//         .catch((error) => console.error(error));
-// }
+function addNewIntake(button) {
+    let tr = button.parentElement.parentElement.parentElement;
+    let data = getRowData(tr);
+    let fetchOptions = {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    };
+    fetch(`http://localhost:8080/intakes/add`, fetchOptions)
+        .then(response => response.json())
+        .catch((error) => console.error(error))
+        .then(() => startGetUsers())
+        .catch((error) => console.error(error));
+}
 
 function getRowData(tr) {
     let inputs = tr.querySelectorAll("input.form-control");
@@ -141,14 +141,14 @@ function getRowData(tr) {
     return data;
 }
 
-// function getNumbersFromDay(tr) {
-//     let inputs = tr.querySelectorAll("input.form-control");
-//     let data = {};
-//     for (let i = 0; i < inputs.length; i++) {
-//         data[inputs[i].name] = inputs[i].value;
-//     }
-//     return data;
-// }
+function getNumbersFromDay(tr) {
+    let inputs = tr.querySelectorAll("input.form-control");
+    let data = {};
+    for (let i = 0; i < inputs.length; i++) {
+        data[inputs[i].name] = inputs[i].value;
+    }
+    return data;
+}
 
 // Delete the whole row
 function delRow(button) {
@@ -176,15 +176,6 @@ function pdfEnvilope(button) {
     let data = getRowData(tr);
 
     let dataJson = JSON.stringify(data);
-    // console.log(data);
-    // console.log(dataJson);
-
-    // window.open(`http://localhost:8080/intakes/get/${data.id}`);
-    // window.open(`envelope.html/?${data.id}`);
-    // window.open(`envelope.html/1`);
-    // window.open(`envelope.html/?1`);
-    // window.open(`envelope.html`);
-    // window.location(`envelope.html/1`)
     takeDataFromOpenSite(dataJson);
 }
 
