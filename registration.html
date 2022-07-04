@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regisztráció</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+  </head>
+
+  <!--origins: https://www.baeldung.com/registration-with-spring-mvc-and-spring-security -->
+<body>
+  <div class="container">
+    <h1 th:text="#{label.form.title}">Regisztráció / Registration</h1>
+<form action="/" th:object="${user}" method="POST" enctype="utf8">
+    <div>
+        <label th:text="#{label.user.firstName}">Keresztnév / First name: </label><br>
+        <input th:field="*{firstName}"/>
+        <p th:each="error: ${#fields.errors('firstName')}" 
+          th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.lastName}">Vezetéknév / Last name: </label> <br>
+        <input th:field="*{lastName}"/>
+        <p th:each="error : ${#fields.errors('lastName')}" 
+          th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.email}">Email: </label><br>
+        <input type="email" th:field="*{email}"/>
+        <p th:each="error : ${#fields.errors('email')}" 
+          th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.password}">Jelszó / Password: </label><br>
+        <input type="password" th:field="*{password}"/>
+        <p th:each="error : ${#fields.errors('password')}" 
+          th:text="${error}">Validation error</p>
+    </div>
+    <div>
+        <label th:text="#{label.user.confirmPass}">Megerősítés / Confirm: </label><br>
+        <input type="password" th:field="*{matchingPassword}"/>
+    </div>
+    <button type="submit" th:text="#{label.form.submit}">Küldés / Submit </button>
+</form>
+
+<a th:href="@{/login.html}" th:text="#{label.form.loginLink}">Belépés / Login </a>
+
+  </div>
+</body>
+</html>
