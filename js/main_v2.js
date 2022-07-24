@@ -1,12 +1,16 @@
 //Keys of data table
 const keys = {
     id: '',
-    month: '', time: '', day: '',
-    medicine01: '', pieces01: '', dose01: ''
+    day: '', month: '', time: '', timeOfDay01: ''
 };
+const keysMedIntakes01 = {
+    medicine01: '', pieces01: '', dose01: ''
+}
 const keysMedIntakes02 = {
     medicine02: '', pieces02: '', dose02: ''
 }
+
+//Buttons
 
 // Get data from server.
 function getServerData(url) {
@@ -20,13 +24,13 @@ function getServerData(url) {
         .catch(err => console.error(err));
 }
 
-function startGetUsers() {
+function startGetMedication() {
     getServerData("http://localhost:8080/intakes/allIntakes")
         .then(data => fillDataTable(data, "pillsDiary"))
         .catch(err => console.error(err));
 }
 
-document.querySelector("#getDataButton").addEventListener("click", startGetUsers);
+document.querySelector("#getDataButton").addEventListener("click", startGetMedication);
 
 
 //Fill table with server data.
@@ -36,34 +40,57 @@ function fillDataTable(data, tableID) {
         console.error(`Table "${tableID}" is not found.`);
         return
     }
-    let refreshedBody = table.querySelector("tbody");
+    let refreshedBody = table.querySelector("#oneDay");
     let tBody = document.createElement('tbody');
     // let newRow = addNewRow(keys);
     // tBody.appendChild(newRow);
+
     for (let row of data) {
-        let tr = createAnyElement("tr");
-        createAndFillRow(row, tr);        
-        let buttonGroup = createButtonGroup();
-        tr.appendChild(buttonGroup);
+        let refreshButton = createButton("btn btn-info", "setRow(this)", '<i class="fa fa-refresh" aria-hidden="true"></i>');
+        // let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
+        let pdfButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>');
+        // let bGroupDay = [pdfButton, refreshButton, deleteButton];
+        let bGroupDay = [pdfButton, refreshButton];
+
+        let tr = createAnyElement("tr", {
+            class: `${row.day}`
+        });
+        let sg = createButtonGroup(bGroupDay, row);
+        tr.appendChild(sg);
+        createAndFillRow(row, tr, keys);
         tBody.appendChild(tr);
+
+        // createIntakeRow(row, keys, tBody);
+        createIntakeRow(row, keysMedIntakes01, tBody);
+        createIntakeRow(row, keysMedIntakes02, tBody);
     }
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
 }
 
-function createAndFillRow(row, tr) {
+function createIntakeRow(row, keys, tBody) {
+    let tr = createAnyElement("tr");
+    createAndFillRow(row, tr, keys);
+    tBody.appendChild(tr);
+}
+
+function createAndFillRow(row, tr, keys) {
     for (let k in keys) {
-        let td = createAnyElement("td");
+        let td = createAnyElement("td", {
+            // class: `day ${row.day}`
+        });
         let input = createAnyElement("input", {
-            class: "form-control",
+            class: `form-control ${k} ${row.day}`,
             value: row[k],
             name: k
         });
-        if (k == "id") {
+        if (k == "id" || k == "day") {
             input.setAttribute("readonly", true);
+        }
+        if (k == "time") {
+            input.setAttribute("dayOfWeek", `weekDay${row.id}`);
         }
         td.appendChild(input);
         tr.appendChild(td);
-        getTimeColumnData(k, row, input);
     }
 }
 
@@ -75,86 +102,40 @@ function createAnyElement(name, attributes) {
     return element;
 }
 
-function createButtonGroup() {
-    let group = createAnyElement("div", { class: "btn btn-group" });
-
-    let infoButton = createAnyElement("button", { class: "btn btn-info", onclick: "setRow(this)" });
-    infoButton.innerHTML = '<i class="fa fa-refresh" aria-hidden="true"></i>';
-    // let deleteButton = createAnyElement("button", { class: "btn btn-danger", onclick: "delRow(this)" });
-    // deleteButton.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
-    let pdfButton = createAnyElement("button", { class: "btn btn-primary", onclick: "pdfEnvilope(this)" });
-    pdfButton.innerHTML = '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>';
-
-    group.appendChild(infoButton);
-    // group.appendChild(deleteButton);
-    group.appendChild(pdfButton);
-
-    let td = createAnyElement("td");
+function createButtonGroup(buttonArray, row) {
+    let group = createAnyElement("div", {
+        class: `btn btn-group`
+    });
+    buttonArray.forEach(element => {
+        group.appendChild(element);
+    });
+    let td = createAnyElement("td", {
+        class: `day ${row.day}`
+    });
     td.appendChild(group);
     return td;
 }
 
-//Create new line
-// function addNewRow(row) {
-//     let tr = createAnyElement("tr");
-//     for (let k in row) {
-//         let td = createAnyElement("td");
-//         let input = createAnyElement("input", {
-//             class: "form-control",
-//             name: k
-//         });
-//         td.appendChild(input);
-//         tr.appendChild(td);
-//     }
-//     let tdBtn = createAnyElement("td");
-//     let group = createAnyElement("div", { class: "btn btn-group" });
-//     let newBtn = createAnyElement("button", {
-//         class: "btn btn-success",
-//         onclick: "addNewIntake(this)"
-//     });
-//     newBtn.innerHTML = '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>';
-//     group.appendChild(newBtn);
-//     tdBtn.appendChild(group);
-//     tr.appendChild(tdBtn);
-//     return tr;
-// }
+function createButton(bClass, bFunction, bIcon) {
+    let button = createAnyElement("button", { class: bClass, onclick: bFunction });
+    button.innerHTML = bIcon;
+    return button;
+}
 
-// function addNewIntake(button) {
-//     let tr = button.parentElement.parentElement.parentElement;
-//     let data = getRowData(tr);
-//     let fetchOptions = {
-//         method: "POST",
-//         mode: "cors",
-//         cache: "no-cache",
-//         headers: {
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(data)
-//     };
-//     fetch(`http://localhost:8080/intakes/add`, fetchOptions)
-//         .then(response => response.json())
-//         .catch((error) => console.error(error))
-//         .then(() => startGetUsers())
-//         .catch((error) => console.error(error));
-// }
-
+//Collect all data from the row and make an js object of them
 function getRowData(tr) {
-    let inputs = tr.querySelectorAll("input.form-control");
     let data = {};
+    let inputs = document.querySelectorAll(`input.${tr.attributes.class.value}`);
     for (let i = 0; i < inputs.length; i++) {
         data[inputs[i].name] = inputs[i].value;
     }
+    let daysOfMonth = document.querySelectorAll(`input.time`);
+    for (let i of daysOfMonth) {
+        let index = i.attributes.dayOfWeek.value;
+        data[index] = i.value;
+    }
     return data;
 }
-
-// function getNumbersFromDay(tr) {
-//     let inputs = tr.querySelectorAll("input.form-control");
-//     let data = {};
-//     for (let i = 0; i < inputs.length; i++) {
-//         data[inputs[i].name] = inputs[i].value;
-//     }
-//     return data;
-// }
 
 // Delete the whole row
 function delRow(button) {
@@ -172,32 +153,23 @@ function delRow(button) {
     fetch(`http://localhost:8080/intakes/del/${data.id}`, fetchOptions)
         .then(response => response.json())
         .catch(error => console.error(error))
-        .then(() => startGetUsers())
+        .then(() => startGetMedication())
         .catch((error) => console.error(error));
 }
-
 
 function pdfEnvilope(button) {
     let tr = button.parentElement.parentElement.parentElement;
     let data = getRowData(tr);
-
     let dataJson = JSON.stringify(data);
-    // console.log(data);
-    // console.log(dataJson);
-
-    // window.open(`http://localhost:8080/intakes/get/${data.id}`);
-    // window.open(`envelope.html/?${data.id}`);
-    // window.open(`envelope.html/1`);
-    // window.open(`envelope.html/?1`);
-    // window.open(`envelope.html`);
-    // window.location(`envelope.html/1`)
     takeDataFromOpenSite(dataJson);
 }
 
 //Set data int the whole row
+// function setRow(button) {
 function setRow(button) {
     let tr = button.parentElement.parentElement.parentElement;
     let data = getRowData(tr);
+    // let data = getRowData(row);
     let fetchOptions = {
         method: "PUT",
         mode: "cors",
@@ -210,12 +182,12 @@ function setRow(button) {
     fetch(`http://localhost:8080/intakes/put/${data.id}`, fetchOptions)
         .then(response => response.json())
         .catch(error => console.error(error))
-        .then(() => startGetUsers())
+        .then(() => startGetMedication())
         .catch((error) => console.error(error));
 }
 
 //Automatic refresh
 window.onload = () => {
-    startGetUsers()
+    startGetMedication()
 }
 

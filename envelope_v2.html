@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boríték</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styleEnvelope.css">
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div id="paper">
+        <div id="mező">
+            <div class="row">
+                <div class="col-6"></div>
+                <div class="col-3">
+                    <div id="day" class="box">
+                        Nap hiányzik
+                    </div>
+                </div>
+                <div class="col-3" font-weight="bold">
+                    <!-- <b>Esti</b> -->
+                    <b id="timeOfDay01" class="box">hiányzó napszak</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7"></div>
+                <div class="col-5">
+                    <table>
+                        <tbody>
+
+                            <tr>
+                                <th>2022.</th>
+                                <th id="month" class="box">Hónap hiányzik</th>
+                                <th id="time" class="box">Nap hiányzik</th>
+                                <th>, 21:00</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tr>
+                            <td id="pieces01" class="box text-end">missing pieces01</td>
+                            <td>x</td>
+                            <td id="dose01" class="box text-end"> missing dose01</td>
+                            <td>mg &nbsp;</td>
+                            <td id="medicine01" class="box">missing medicine01</td>
+                        </tr>
+                        <tr>
+                            <td id="pieces02" class="box text-end"> missing pieces02</td>
+                            <td>x</td>
+                            <td id="dose02" class="box text-end">missing dose02</td>
+                            <td>mg &nbsp;</td>
+                            <td id="medicine02" class="box">missing medicine02</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <di class="row">
+                <div class="col-6"></div>
+                <div class="col-6">
+                    <div id="month" class="box">missing month</div>
+                    <table id="matrix" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>H</th>
+                                <th>K</th>
+                                <th>Sze</th>
+                                <th>Cs</th>
+                                <th>P</th>
+                                <th>Szo</th>
+                                <th>V</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                <td id="rowDay">nap</td>
+                                <td id="weekDay1" class="box">hiányzó dátum</td>
+                                <td id="weekDay2" class="box">hiányzó dátum</td>
+                                <td id="weekDay3" class="box">hiányzó dátum</td>
+                                <td id="weekDay4" class="box">hiányzó dátum</td>
+                                <td id="weekDay5" class="box">hiányzó dátum</td>
+                                <td id="weekDay6" class="box">hiányzó dátum</td>
+                                <td id="weekDay7" class="box">hiányzó dátum</td>
+                            </tr>
+                            <tr>
+                                <th scope="row" id="rowMorning">Reg.</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" id="rowNoon">Dél</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row" id="rowEvening">Esti</th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </di>
+
+        </div>
+    </div>
+
+
+
+    <script src="js/env_v2.js"></script>
+    <script src="js/dataTransfer_v2.js"></script>
+</body>
+
+</html>
