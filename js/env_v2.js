@@ -36,6 +36,10 @@ function fillRowWithHeartEmoji(thSelected) {
         let indexX = dataJSON.id;
         thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
     }
+    if (timeOfDay == "Reggeli" && thSelected == "th#rowMorning") {
+        let indexX = dataJSON.id;
+        thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
+    }
 }
 
 
