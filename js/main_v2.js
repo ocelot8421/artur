@@ -42,15 +42,14 @@ function fillDataTable(data, tableID) {
     }
     let refreshedBody = table.querySelector("#oneDay");
     let tBody = document.createElement('tbody');
-    // let newRow = addNewRow(keys);
-    // tBody.appendChild(newRow);
 
     for (let row of data) {
         let refreshButton = createButton("btn btn-info", "setRow(this)", '<i class="fa fa-refresh" aria-hidden="true"></i>');
-        // let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
         let pdfButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>');
+        let plusButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
+        // let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
         // let bGroupDay = [pdfButton, refreshButton, deleteButton];
-        let bGroupDay = [pdfButton, refreshButton];
+        let bGroupDay = [pdfButton, refreshButton, plusButton];
 
         let tr = createAnyElement("tr", {
             class: `${row.day}`
@@ -60,7 +59,6 @@ function fillDataTable(data, tableID) {
         createAndFillRow(row, tr, keys);
         tBody.appendChild(tr);
 
-        // createIntakeRow(row, keys, tBody);
         createIntakeRow(row, keysMedIntakes01, tBody);
         createIntakeRow(row, keysMedIntakes02, tBody);
     }
@@ -68,7 +66,11 @@ function fillDataTable(data, tableID) {
 }
 
 function createIntakeRow(row, keys, tBody) {
+    // let plusButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
+    // let buttonArray = [plusButton];
+    // let buttonGroup = createButtonGroup(buttonArray, row);
     let tr = createAnyElement("tr");
+    // tr.appendChild(buttonGroup);
     createAndFillRow(row, tr, keys);
     tBody.appendChild(tr);
 }
