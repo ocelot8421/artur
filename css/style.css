@@ -4,5 +4,9 @@
 
 .table {
   vertical-align: text-bottom;
-  border-color: whitesmoke
+  border-color: whitesmoke;
+}
+
+.inputName {
+  color: cornflowerblue;
 }

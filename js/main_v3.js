@@ -3,15 +3,9 @@ const keys = {
     id: '',
     dayOfWeek: '', month: '', dayOfMonth: '', timeOfDay: ''
 };
-const keysMedIntakes01 = {
-    medicine01: '', pieces01: '', dose01: ''
-}
-const keysMedIntakes02 = {
-    medicine02: '', pieces02: '', dose02: ''
-}
-const keysEmptyRow = {
-    medicine: '', pieces: '', dose: ''
-}
+const keysMedIntakes01 = { id: 1, medicine01: '', pieces01: '', dose01: '' }
+const keysMedIntakes02 = { id: 2, medicine02: '', pieces02: '', dose02: '' }
+const keysEmptyRow = { id: 0, medicine: '', pieces: '', dose: '' }
 
 // Get data from server.
 function getServerData(url) {
@@ -47,19 +41,18 @@ function fillDataTable(data, tableID) {
         let div = createAnyElement("div", {
             class: "table",
         });
-        createTimeRow(row, div);
-        createIntakeRow(row, keysMedIntakes01, div);
-        createIntakeRow(row, keysMedIntakes02, div);
+        let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
+        createTimeRow(row, div, plusButton);
+        // createIntakeRow(row, keysMedIntakes01, div);
+        // createIntakeRow(row, keysMedIntakes02, div);
         tBody.appendChild(div);
     }
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
 }
 
-function createTimeRow(row, div) {
+function createTimeRow(row, div, plusButton) {
     let refreshButton = createButton("btn btn-info", "setRow(this)", '<i class="fa fa-refresh" aria-hidden="true"></i>');
     let pdfButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>');
-    // let plusButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
-    let plusButton = createButton("btn btn-primary", "createEmptyIntakeRow(this.parentElement.parentElement.parentElement.parentElement)", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
     let bGroupDay = [pdfButton, refreshButton, plusButton];
     let tr = createAnyElement("tr", {
         class: `${row.dayOfWeek}`
@@ -67,6 +60,9 @@ function createTimeRow(row, div) {
     let sg = createButtonGroup(bGroupDay, row);
     tr.appendChild(sg);
     createAndFillRow(row, tr, keys);
+
+    let bFunction = "createEmptyIntakeRow(this.parentElement.parentElement.parentElement.parentElement, this)";
+    plusButton.setAttribute("onclick", bFunction);
     div.appendChild(tr);
 }
 
@@ -84,6 +80,9 @@ function createAndFillRow(row, tr, keys) {
             value: row[k],
             name: k
         });
+        if (k == "id") {
+            input.setAttribute("value", row.id * 100)
+        }
         if (k == "id" || k == "dayOfWeek") {
             input.setAttribute("readonly", true);
         }
@@ -95,18 +94,35 @@ function createAndFillRow(row, tr, keys) {
     }
 }
 
-function createEmptyIntakeRow(tBody) {
+
+function createPlusButton(bClass, bIcon) {
+    let button = createAnyElement("button", {
+        class: bClass,
+        onclick: ""
+    });
+    button.innerHTML = bIcon;
+    return button;
+}
+
+function createEmptyIntakeRow(div) {
+    let numIdTime = div.firstChild.firstChild.nextSibling.firstChild.value;
+    let numIdMed = div.lastChild.querySelector(".form-control").value;
+    let numRow = parseInt(numIdMed) + 1;
     let trEmpty = createAnyElement("tr");
     for (const key in keysEmptyRow) {
         let tdEmpty = createAnyElement("td");
         let inputEmpty = createAnyElement("input", {
-            class: "form-control",
-            name: key
+            class: "form-control inputName",
+            name: key + numRow,
+            value: key + numRow
         });
+        if (key == "id") {
+            inputEmpty.setAttribute("value", numRow);
+        }
         tdEmpty.appendChild(inputEmpty);
         trEmpty.appendChild(tdEmpty);
     }
-    tBody.appendChild(trEmpty);
+    div.appendChild(trEmpty);
 }
 
 function createAnyElement(name, attributes) {
