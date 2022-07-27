@@ -3,9 +3,9 @@ const keys = {
     id: '',
     dayOfWeek: '', month: '', dayOfMonth: '', timeOfDay: ''
 };
-const keysMedIntakes01 = { id: 1, medicine01: '', pieces01: '', dose01: '' }
-const keysMedIntakes02 = { id: 2, medicine02: '', pieces02: '', dose02: '' }
-const keysEmptyRow = { id: 0, medicine: '', pieces: '', dose: '' }
+const keysMedIntakes01 = { idMed: 1, medicine01: '', pieces01: '', dose01: '' }
+const keysMedIntakes02 = { idMed: 2, medicine02: '', pieces02: '', dose02: '' }
+const keysEmptyRow = { idMed: 0, medicine: '', pieces: '', dose: '' }
 
 // Get data from server.
 function getServerData(url) {
@@ -43,8 +43,8 @@ function fillDataTable(data, tableID) {
         });
         let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
         createTimeRow(row, div, plusButton);
-        // createIntakeRow(row, keysMedIntakes01, div);
-        // createIntakeRow(row, keysMedIntakes02, div);
+        createIntakeRow(row, keysMedIntakes01, div);
+        createIntakeRow(row, keysMedIntakes02, div);
         tBody.appendChild(div);
     }
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
@@ -66,13 +66,13 @@ function createTimeRow(row, div, plusButton) {
     div.appendChild(tr);
 }
 
-function createIntakeRow(row, keys, tBody) {
+function createIntakeRow(row, keys, div) {
     let tr = createAnyElement("tr");
-    createAndFillRow(row, tr, keys);
-    tBody.appendChild(tr);
+    createAndFillRow(row, tr, keys, div);
+    div.appendChild(tr);
 }
 
-function createAndFillRow(row, tr, keys) {
+function createAndFillRow(row, tr, keys, div) {
     for (let k in keys) {
         let td = createAnyElement("td");
         let input = createAnyElement("input", {
@@ -80,6 +80,12 @@ function createAndFillRow(row, tr, keys) {
             value: row[k],
             name: k
         });
+        if (k == "idMed") {
+            let valueMed = div.lastChild.querySelector(".form-control").value;
+            console.log(valueMed);
+            input.setAttribute("idMed", parseInt(valueMed) + 1);
+            input.setAttribute("value", parseInt(valueMed) + 1);
+        }
         if (k == "id") {
             input.setAttribute("value", row.id * 100)
         }
@@ -116,7 +122,7 @@ function createEmptyIntakeRow(div) {
             name: key + numRow,
             value: key + numRow
         });
-        if (key == "id") {
+        if (key == "idMed") {
             inputEmpty.setAttribute("value", numRow);
         }
         tdEmpty.appendChild(inputEmpty);
