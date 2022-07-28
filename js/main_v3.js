@@ -1,10 +1,17 @@
 //Keys of data table
 const keys = {
     id: '',
-    dayOfWeek: '', month: '', dayOfMonth: '', timeOfDay: ''
+    dayOfWeek: '', year: '', month: '', dayOfMonth: '', timeOfDay: '',
+    keysMedIntakes: {}
 };
-const keysMedIntakes01 = { idMed: 1, medicine01: '', pieces01: '', dose01: '' }
-const keysMedIntakes02 = { idMed: 2, medicine02: '', pieces02: '', dose02: '' }
+let numberOfMedicationIntakes = 3;
+for (let index = 1; index <= numberOfMedicationIntakes; index++) {
+    keys.keysMedIntakes[`keysMedIntakes${index}`] = {};
+    keys.keysMedIntakes[`keysMedIntakes${index}`][`idMed`] = index;
+    keys.keysMedIntakes[`keysMedIntakes${index}`][`medicine0${index}`] = '';
+    keys.keysMedIntakes[`keysMedIntakes${index}`][`pieces0${index}`] = '';
+    keys.keysMedIntakes[`keysMedIntakes${index}`][`dose0${index}`] = '';
+}
 const keysEmptyRow = { idMed: 0, medicine: '', pieces: '', dose: '' }
 
 // Get data from server.
@@ -43,8 +50,9 @@ function fillDataTable(data, tableID) {
         });
         let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
         createTimeRow(row, div, plusButton);
-        createIntakeRow(row, keysMedIntakes01, div);
-        createIntakeRow(row, keysMedIntakes02, div);
+        for (let index = 1; index <= numberOfMedicationIntakes; index++) {
+            createIntakeRow(row, keys.keysMedIntakes[`keysMedIntakes${index}`], div);
+        }
         tBody.appendChild(div);
     }
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
@@ -67,39 +75,48 @@ function createTimeRow(row, div, plusButton) {
 }
 
 function createIntakeRow(row, keys, div) {
+    let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
+    let divButton = createAnyElement("div");
+    divButton.appendChild(deleteButton);
+    let tdButton = createAnyElement("td");
+    tdButton.appendChild(divButton)
     let tr = createAnyElement("tr");
+    tr.appendChild(tdButton);
     createAndFillRow(row, tr, keys, div);
     div.appendChild(tr);
 }
 
 function createAndFillRow(row, tr, keys, div) {
     for (let k in keys) {
-        let td = createAnyElement("td");
-        let input = createAnyElement("input", {
-            class: `form-control ${k} ${row.dayOfWeek}`,
-            value: row[k],
-            name: k
-        });
-        if (k == "idMed") {
-            let valueMed = div.lastChild.querySelector(".form-control").value;
-            console.log(valueMed);
-            input.setAttribute("idMed", parseInt(valueMed) + 1);
-            input.setAttribute("value", parseInt(valueMed) + 1);
+        if (k !== "keysMedIntakes") {
+            let td = createAnyElement("td");
+            let input = createAnyElement("input", {
+                class: `form-control ${k} ${row.dayOfWeek}`,
+                value: row[k],
+                name: k
+            });
+            switch (k) {
+                case "idMed":
+                    let valueMed = div.lastChild.querySelector(".form-control").value;
+                    input.setAttribute("idMed", parseInt(valueMed) + 1);
+                    input.setAttribute("value", parseInt(valueMed) + 1);
+                    break;
+                case "id":
+                    input.setAttribute("value", row.id * 100)
+                    input.setAttribute("readonly", true);
+                    break;
+                case "dayOfWeek":
+                    input.setAttribute("readonly", true);
+                    break;
+                case "dayOfMonth":
+                    input.setAttribute("dayOfWeek", `weekDay${row.id}`);
+                    break;
+            };
+            td.appendChild(input);
+            tr.appendChild(td);
         }
-        if (k == "id") {
-            input.setAttribute("value", row.id * 100)
-        }
-        if (k == "id" || k == "dayOfWeek") {
-            input.setAttribute("readonly", true);
-        }
-        if (k == "dayOfMonth") {
-            input.setAttribute("dayOfWeek", `weekDay${row.id}`);
-        }
-        td.appendChild(input);
-        tr.appendChild(td);
     }
 }
-
 
 function createPlusButton(bClass, bIcon) {
     let button = createAnyElement("button", {
@@ -111,10 +128,10 @@ function createPlusButton(bClass, bIcon) {
 }
 
 function createEmptyIntakeRow(div) {
-    let numIdTime = div.firstChild.firstChild.nextSibling.firstChild.value;
     let numIdMed = div.lastChild.querySelector(".form-control").value;
     let numRow = parseInt(numIdMed) + 1;
-    let trEmpty = createAnyElement("tr");
+    let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
+    let trEmpty = createEmptyRow(deleteButton);
     for (const key in keysEmptyRow) {
         let tdEmpty = createAnyElement("td");
         let inputEmpty = createAnyElement("input", {
@@ -129,6 +146,16 @@ function createEmptyIntakeRow(div) {
         trEmpty.appendChild(tdEmpty);
     }
     div.appendChild(trEmpty);
+}
+
+function createEmptyRow(button) {
+    let divButton = createAnyElement("div");
+    let tdButton = createAnyElement("td");
+    let trEmpty = createAnyElement("tr");
+    divButton.appendChild(button);
+    tdButton.appendChild(divButton);
+    trEmpty.appendChild(tdButton);
+    return trEmpty;
 }
 
 function createAnyElement(name, attributes) {
