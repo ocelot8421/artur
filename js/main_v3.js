@@ -19,8 +19,10 @@ const keysEmptyRow = { idMed: 0, medicine: '', pieces: '', dose: '' }
 
 let keysMedicine = {
     id: '',
-    name: '', dose: '', unit: ''
+    name: '', dose: '', unit: '', pieces: '', piecesUnit: ''
 };
+
+
 
 // Get data from server.
 function getServerData(url) {
