@@ -1,7 +1,10 @@
+// import { createAnyElement } from "./exportFunctions";
+
+
 //Keys of data table
 const keys = {
-    id: '',
-    dayOfWeek: '', year: '', month: '', dayOfMonth: '', timeOfDay: '',
+    id: '', idTime: '',
+    dayOfWeek: '', year: '', month: '', dayOfMonth: '', timeOfDay: '', hour: '',
     // keysMedIntakes: {}
     medicines: {}
 };
@@ -14,7 +17,6 @@ for (let index = 1; index <= numberOfMedicationIntakes; index++) {
     keys.medicines[`keysMedIntakes${index}`][`dose0${index}`] = '';
 }
 const keysEmptyRow = { idMed: 0, medicine: '', pieces: '', dose: '' }
-
 
 
 let keysMedicine = {
@@ -47,6 +49,9 @@ document.querySelector("#getDataButton").addEventListener("click", startGetMedic
 
 //Fill table with server data.
 function fillDataTable(data, tableID) {
+    console.log(data);
+
+
     let table = document.querySelector(`#${tableID}`);
     if (!table) {
         console.error(`Table "${tableID}" is not found.`);
@@ -59,12 +64,12 @@ function fillDataTable(data, tableID) {
             class: "table",
         });
         let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
-        createTimeRow(row, divRow, plusButton, tBody);
+        createDay(row, divRow, plusButton, tBody);
     }
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
 }
 
-function createTimeRow(row, div, plusButton, tBody) {
+function createDay(row, div, plusButton, tBody) {
     let refreshButton = createButton("btn btn-info", "setRow(this)", '<i class="fa fa-refresh" aria-hidden="true"></i>');
     let pdfButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>');
     let bGroupDay = [pdfButton, refreshButton, plusButton];
@@ -82,21 +87,17 @@ function createTimeRow(row, div, plusButton, tBody) {
 
 function createAndFillRow(row, tr, keys, div) {
     for (let k in keys) {
-        if (k !== "medicines") {
+        if (k !== "medicines" && k !== "id") {
             let td = createAnyElement("td");
             let input = createAnyElement("input", {
-                class: `form-control ${k} ${row.dayOfWeek}`,
+                class: `form-control time ${k} ${row.dayOfWeek}`,
                 value: row[k],
                 name: k
             });
             switch (k) {
-                case "idMed":
-                    let valueMed = div.lastChild.querySelector(".form-control").value;
-                    input.setAttribute("idMed", parseInt(valueMed) + 1);
-                    input.setAttribute("value", parseInt(valueMed) + 1);
-                    break;
-                case "id":
-                    input.setAttribute("value", row.id * 100)
+                case "idTime":
+                    input.setAttribute("idTime", row.id);
+                    input.setAttribute("value", row.id);
                     input.setAttribute("readonly", true);
                     break;
                 case "dayOfWeek":
@@ -105,6 +106,8 @@ function createAndFillRow(row, tr, keys, div) {
                 case "dayOfMonth":
                     input.setAttribute("dayOfWeek", `weekDay${row.id}`);
                     break;
+                case "timeOfDay":
+                    input.setAttribute("readonly", true)
             };
             td.appendChild(input);
             tr.appendChild(td);
@@ -124,9 +127,9 @@ function fillMedicineRow(row, keysMedicine, div, row) {
         for (m in keysMedicine) {
             let td = createAnyElement("td");
             let input = createAnyElement("input", {
-                class: `form-control`,
+                class: `form-control medicine ${m} ${row.dayOfWeek}`,
                 value: row.medicines[i][m],
-                name: m
+                name: `${m}Med${i}`
             });
             td.appendChild(input);
             trMedicine.appendChild(td);
@@ -167,21 +170,21 @@ function createEmptyIntakeRow(div) {
 
 function createEmptyRow(button) {
     let divButton = createAnyElement("div");
-    let tdButton = createAnyElement("td");
-    let trEmpty = createAnyElement("tr");
     divButton.appendChild(button);
+    let tdButton = createAnyElement("td");
     tdButton.appendChild(divButton);
+    let trEmpty = createAnyElement("tr");
     trEmpty.appendChild(tdButton);
     return trEmpty;
 }
 
-function createAnyElement(name, attributes) {
-    let element = document.createElement(name);
-    for (let k in attributes) {
-        element.setAttribute(k, attributes[k]);
-    }
-    return element;
-}
+// export function createAnyElement(name, attributes) {
+//     let element = document.createElement(name);
+//     for (let k in attributes) {
+//         element.setAttribute(k, attributes[k]);
+//     }
+//     return element;
+// }
 
 //Create td within buttons
 function createButtonGroup(buttonArray, row) {
@@ -206,9 +209,11 @@ function createButton(bClass, bFunction, bIcon) {
 }
 
 //Collect all data from the row and make an js object of them
-function getRowData(tr) {
+// function getRowData(tr) {
+function getDayData(divDay) {
     let data = {};
-    let inputs = document.querySelectorAll(`input.${tr.attributes.class.value}`);
+    // let inputs = document.querySelectorAll(`input.${tr.attributes.class.value}`);
+    let inputs = divDay.querySelectorAll(`input`);
     for (let i = 0; i < inputs.length; i++) {
         data[inputs[i].name] = inputs[i].value;
     }
@@ -217,13 +222,15 @@ function getRowData(tr) {
         let index = i.attributes.dayOfWeek.value;
         data[index] = i.value;
     }
+    console.log("data: "); //---------------------------------
+    console.log(data); //-----------------------------------
     return data;
 }
 
 // Delete the whole row
 function delRow(button) {
     let tr = button.parentElement.parentElement.parentElement;
-    let data = getRowData(tr);
+    let data = getDayData(tr);
     let fetchOptions = {
         method: "DELETE",
         mode: "cors",
@@ -241,8 +248,8 @@ function delRow(button) {
 }
 
 function pdfEnvilope(button) {
-    let tr = button.parentElement.parentElement.parentElement;
-    let data = getRowData(tr);
+    let divDay = button.parentElement.parentElement.parentElement.parentElement;
+    let data = getDayData(divDay);
     let dataJson = JSON.stringify(data);
     takeDataFromOpenSite(dataJson);
 }
@@ -251,7 +258,7 @@ function pdfEnvilope(button) {
 // function setRow(button) {
 function setRow(button) {
     let tr = button.parentElement.parentElement.parentElement;
-    let data = getRowData(tr);
+    let data = getDayData(tr);
     // let data = getRowData(row);
     let fetchOptions = {
         method: "PUT",

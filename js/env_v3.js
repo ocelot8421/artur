@@ -1,17 +1,46 @@
-//Get datas from weeklyMedIntakes.html
 let data = sessionStorage.getItem('transferedDatas');
 let dataJSON = JSON.parse(data);
 
-vmifuggveny(dataJSON);
+//Create dynamic medicine table till 10 rows
+let tbodyMedIntakes = document.querySelector("#tbodyMedIntakes");
+let numTrMedMax = 10
+for (let i = 0; i < numTrMedMax; i++) {
+    let trMed = createAnyElement("tr");
+    tbodyMedIntakes.appendChild(trMed);
+    const boxNameMed = {};
+    boxNameMed[`piecesMed${i}`] = '';
+    boxNameMed[`doseMed${i}`] = '';
+    boxNameMed[`unitMed${i}`] = '';
+    boxNameMed[`nameMed${i}`] = '';
+    boxNameMed[`hourMed${i}`] = '';
 
-//Collect elements (mainly "td"s) marked "box" class and insert the datas from weeklyMedIntake.html by the correct keys
-function vmifuggveny(data) {
+    for (aBoxName in boxNameMed) {
+        let tdMed = createAnyElement("td", {
+            name: aBoxName,
+            class: "box tdMEd text-end",
+        });
+        // tdMed.innerHTML = dataJSON[aBoxName];
+        trMed.appendChild(tdMed);
+        tdMed.innerHTML = aBoxName == `piecesMed${i}` ? (dataJSON[aBoxName] + " x") : dataJSON[aBoxName];
+        if (dataJSON[aBoxName] == null) {
+            tdMed.innerHTML = null;
+        }
+    }
+    tbodyMedIntakes.appendChild(trMed);
+}
+
+
+
+fillMedRow(dataJSON);
+
+//Collect elements (mainly "td"s) marked "box" class and insert data from weeklyMedIntake.html by the correct keys
+function fillMedRow(data) {
     let index = "box";
     let inputs = document.querySelectorAll(`.${index}`);
     for (let key of inputs) {
-        for (let sg in data) {
-            if (key.id == sg) {
-                key.innerHTML = data[sg];
+        for (let aData in data) {
+            if (key.id == aData) {
+                key.innerHTML = data[aData];
             }
         }
     }
@@ -20,17 +49,22 @@ function vmifuggveny(data) {
 let timeOfDay = document.querySelector("#timeOfDay").innerHTML;
 
 //Fill rows with hearth emoji
-fillRowWithHeartEmoji(`th#rowEvening`);
 fillRowWithHeartEmoji(`th#rowMorning`);
+fillRowWithHeartEmoji(`th#rowEvening`);
+
 function fillRowWithHeartEmoji(thSelected) {
-    let thEvening = document.querySelector(thSelected);
-    let thSiblings = thEvening.parentNode.children;
+    let thTimeOfDay = document.querySelector(thSelected);
+    let thSiblings = thTimeOfDay.parentNode.children;
     for (let index = 1; index < thSiblings.length; index++) {
         thSiblings[index].innerHTML = '<i class="fa fa-heart-o" aria-hidden="true"></i>';
     }
-    //Put the astronaut into the correct td
+    //Put the astronaut into the correct td //TODO!!!
+    if (timeOfDay == "Reggeli" && thSelected == "th#rowMorning") {
+        let indexX = dataJSON.idTime - 7; // TODO: make it dynamic by html element attributums
+        thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
+    }
     if (timeOfDay == "Esti" && thSelected == "th#rowEvening") {
-        let indexX = dataJSON.id;
+        let indexX = dataJSON.idTime;
         thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
     }
 }
