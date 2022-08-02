@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boríték</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styleEnvelope.css">
     <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styleEnvelope.css">
 </head>
 
 <body>
@@ -33,37 +33,25 @@
                 <div class="col-5">
                     <table>
                         <tbody>
-
                             <tr>
                                 <th>2022.</th>
                                 <th id="month" class="box">Hónap hiányzik</th>
                                 <th id="dayOfMonth" class="box">Nap hiányzik</th>
-                                <th>, 21:00</th>
+                                <th id="hour" class="box">missing hour</th>
                             </tr>
                         </tbody>
                     </table>
                     <table>
-                        <tr>
-                            <td id="pieces01" class="box text-end">missing pieces01</td>
-                            <td>x</td>
-                            <td id="dose01" class="box text-end"> missing dose01</td>
-                            <td>mg &nbsp;</td>
-                            <td id="medicine01" class="box">missing medicine01</td>
-                        </tr>
-                        <tr>
-                            <td id="pieces02" class="box text-end"> missing pieces02</td>
-                            <td>x</td>
-                            <td id="dose02" class="box text-end">missing dose02</td>
-                            <td>mg &nbsp;</td>
-                            <td id="medicine02" class="box">missing medicine02</td>
-                        </tr>
+                        <tbody id="tbodyMedIntakes">
+
+                        </tbody>
                     </table>
                 </div>
             </div>
             <di class="row">
                 <div class="col-6"></div>
                 <div class="col-6">
-                    <div id="month" class="box">missing month</div>
+                    <div id="month" class="box monthAboveTimeTable">missing month</div>
                     <table id="matrix" class="table table-bordered">
                         <thead>
                             <tr>
@@ -129,6 +117,7 @@
 
 
 
+    <script src="js/exportFunctions.js"></script>
     <script src="js/env_v3.js"></script>
     <script src="js/dataTransfer_v3.js"></script>
 </body>
