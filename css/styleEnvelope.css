@@ -12,6 +12,10 @@
   font-weight: bold;
 }
 
-.tdMEd {
+.tdMed {
+  padding-left: 5px;
+}
+
+.tdTime {
   padding-left: 5px;
 }

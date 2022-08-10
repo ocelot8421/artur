@@ -1,29 +1,22 @@
-// import { createAnyElement } from "./exportFunctions";
-
-
 //Keys of data table
 const keys = {
-    id: '', idTime: '',
-    dayOfWeek: '', year: '', month: '', dayOfMonth: '', timeOfDay: '', hour: '',
-    // keysMedIntakes: {}
-    medicines: {}
+    id: '', dayEng: '',
+    // dayOfWeek: '', year: '', month: '', dayOfMonth: '', timeOfDay: '',
+    timeOfDayDTOs: []
 };
-let numberOfMedicationIntakes = 3;
-for (let index = 1; index <= numberOfMedicationIntakes; index++) {
-    keys.medicines[`keysMedIntakes${index}`] = {};
-    keys.medicines[`keysMedIntakes${index}`][`idMed`] = index;
-    keys.medicines[`keysMedIntakes${index}`][`medicine0${index}`] = '';
-    keys.medicines[`keysMedIntakes${index}`][`pieces0${index}`] = '';
-    keys.medicines[`keysMedIntakes${index}`][`dose0${index}`] = '';
+
+const keysTimeOfDay = {
+    // id: '', 
+    timeOfDayEng: '', hour: '',
+    medicineDTOs: []
 }
-const keysEmptyRow = { idMed: 0, medicine: '', pieces: '', dose: '' }
 
-
-let keysMedicine = {
+const keysMedicine = {
     id: '',
-    name: '', dose: '', unit: '', pieces: '', piecesUnit: ''
+    medicineName: '', dose: '', unit: '', pieces: '', piecesUnit: ''
 };
 
+const keysEmptyRow = { idMed: '', medicine: '', pieces: '', dose: '' }
 
 
 // Get data from server.
@@ -39,7 +32,10 @@ function getServerData(url) {
 }
 
 function startGetMedication() {
-    getServerData("http://localhost:8080/intakes/allIntakes")
+    // getServerData("http://localhost:8080/intakes/allIntakes")
+    getServerData("http://localhost:8080/medicines")
+        // .then(data => { return fillDataTable(data, "pillsDiary")})
+        // .then(data => { allIntakes = data; fillDataTable(data, "pillsDiary") })
         .then(data => fillDataTable(data, "pillsDiary"))
         .catch(err => console.error(err));
 }
@@ -49,8 +45,7 @@ document.querySelector("#getDataButton").addEventListener("click", startGetMedic
 
 //Fill table with server data.
 function fillDataTable(data, tableID) {
-    console.log(data);
-
+    // console.log(data); //--------------------------------------
 
     let table = document.querySelector(`#${tableID}`);
     if (!table) {
@@ -59,52 +54,53 @@ function fillDataTable(data, tableID) {
     }
     let refreshedBody = table.querySelector("#oneDay");
     let tBody = createAnyElement('tbody');
-    for (let row of data) {
-        let divRow = createAnyElement("div", {
+    for (let dayData of data) {
+        let divDay = createAnyElement("div", {
             class: "table",
         });
         let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
-        createDay(row, divRow, plusButton, tBody);
+        createDay(dayData, divDay, plusButton, tBody);
     }
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
 }
 
-function createDay(row, div, plusButton, tBody) {
+function createDay(dayData, divDay, plusButton, tBody) {
     let refreshButton = createButton("btn btn-info", "setRow(this)", '<i class="fa fa-refresh" aria-hidden="true"></i>');
     let pdfButton = createButton("btn btn-primary", "pdfEnvilope(this)", '<i class="fa fa-file-pdf-o" aria-hidden="true"></i>');
     let bGroupDay = [pdfButton, refreshButton, plusButton];
     let tr = createAnyElement("tr", {
-        class: `time ${row.dayOfWeek}`
+        class: `time ${dayData.dayOfWeek}`
     });
-    let btnGroup = createButtonGroup(bGroupDay, row);
+    let btnGroup = createButtonGroup(bGroupDay, dayData);
     tr.appendChild(btnGroup);
-    div.appendChild(tr);
-    createAndFillRow(row, tr, keys, div);
+    divDay.appendChild(tr);
+    createAndFillRow(dayData, tr, keys, divDay);
     let bFunction = "createEmptyIntakeRow(this.parentElement.parentElement.parentElement.parentElement, this)";
     plusButton.setAttribute("onclick", bFunction);
-    tBody.appendChild(div);
+    tBody.appendChild(divDay);
 }
 
-function createAndFillRow(row, tr, keys, div) {
+function createAndFillRow(dayData, tr, keys, div) {
     for (let k in keys) {
-        if (k !== "medicines" && k !== "id") {
+        // if (k !== "medicines" && k !== "id" && k !== "dailyCycles") {
+        if (k !== "timeOfDayDTOs" && k !== "id") {
             let td = createAnyElement("td");
             let input = createAnyElement("input", {
-                class: `form-control time ${k} ${row.dayOfWeek}`,
-                value: row[k],
+                class: `form-control time ${k} ${dayData.dayOfWeek}`,
+                value: dayData[k],
                 name: k
             });
             switch (k) {
                 case "idTime":
-                    input.setAttribute("idTime", row.id);
-                    input.setAttribute("value", row.id);
+                    input.setAttribute("idTime", dayData.id);
+                    input.setAttribute("value", dayData.id);
                     input.setAttribute("readonly", true);
                     break;
                 case "dayOfWeek":
                     input.setAttribute("readonly", true);
                     break;
                 case "dayOfMonth":
-                    input.setAttribute("dayOfWeek", `weekDay${row.id}`);
+                    input.setAttribute("dayOfWeek", `weekDay${dayData.id}`);
                     break;
                 case "timeOfDay":
                     input.setAttribute("readonly", true)
@@ -113,29 +109,52 @@ function createAndFillRow(row, tr, keys, div) {
             tr.appendChild(td);
             div.appendChild(tr)
         }
-        if (k == "medicines") {
-            fillMedicineRow(row, keysMedicine, div, row);
+        if (k == "timeOfDayDTOs") {
+            fillTimeOfDayRow(dayData, keysTimeOfDay, div, k);
+
         }
     }
 }
 
-function fillMedicineRow(row, keysMedicine, div, row) {
-    for (let i = 0; i < row.medicines.length; i++) {
+function fillTimeOfDayRow(dayData, keys, div, subData) {
+    for (let i = 0; i < dayData[subData].length; i++) {
         let trMedicine = createAnyElement("tr", {
-            class: `medicine ${row.dayOfWeek}`
+            class: `${subData} ${dayData.dayOfWeek}`
         });
-        for (m in keysMedicine) {
-            let td = createAnyElement("td");
-            let input = createAnyElement("input", {
-                class: `form-control medicine ${m} ${row.dayOfWeek}`,
-                value: row.medicines[i][m],
-                name: `${m}Med${i}`
-            });
-            td.appendChild(input);
-            trMedicine.appendChild(td);
-            div.appendChild(trMedicine);
+        for (m in keys) {
+            if (m !== "medicineDTOs") {
+                let td = createAnyElement("td");
+                let input = createAnyElement("input", {
+                    class: `form-control medicine${i} ${m} ${dayData.dayOfWeek}`,
+                    value: dayData[subData][i][m],
+                    name: `${m}Med`
+                });
+                td.appendChild(input);
+                trMedicine.appendChild(td);
+                div.appendChild(trMedicine);
+            }
+            if (m == "medicineDTOs") {
+                for (objectMedicine of dayData[subData][i][m]) {
+                    fillRow(objectMedicine, keysMedicine, div)
+                }
+            }
         }
     }
+}
+
+function fillRow(objectOfData, keys, div) {
+    let trAny = createAnyElement("tr");
+    for (k in keys) {
+        let inputAny = createAnyElement("input", {
+            class: "form-control",
+            value: objectOfData[k]
+        });
+        let tdAny = createAnyElement("td");
+        tdAny.appendChild(inputAny);
+        trAny.appendChild(tdAny);
+    }
+
+    div.appendChild(trAny);
 }
 
 function createPlusButton(bClass, bIcon) {
@@ -178,14 +197,6 @@ function createEmptyRow(button) {
     return trEmpty;
 }
 
-// export function createAnyElement(name, attributes) {
-//     let element = document.createElement(name);
-//     for (let k in attributes) {
-//         element.setAttribute(k, attributes[k]);
-//     }
-//     return element;
-// }
-
 //Create td within buttons
 function createButtonGroup(buttonArray, row) {
     let group = createAnyElement("div", {
@@ -209,21 +220,31 @@ function createButton(bClass, bFunction, bIcon) {
 }
 
 //Collect all data from the row and make an js object of them
-// function getRowData(tr) {
 function getDayData(divDay) {
     let data = {};
     // let inputs = document.querySelectorAll(`input.${tr.attributes.class.value}`);
-    let inputs = divDay.querySelectorAll(`input`);
-    for (let i = 0; i < inputs.length; i++) {
-        data[inputs[i].name] = inputs[i].value;
+    let timeRowData = divDay.querySelectorAll(`input.time`);
+    for (let i = 0; i < timeRowData.length; i++) {
+        data[timeRowData[i].name] = timeRowData[i].value;
     }
+    data["medicines"] = [];
+    let numMedRow = divDay.querySelectorAll("tr.medicine");
+    for (let i = 0; i < numMedRow.length; i++) {
+        let inputsOfMedRow = divDay.querySelectorAll(`input.medicine${i}`)
+        let medicine = {};
+
+        inputsOfMedRow.forEach(input => {
+            medicine[input.name] = input.value;
+        });
+
+        data.medicines.push(medicine);
+    }
+
     let daysOfMonth = document.querySelectorAll(`input.dayOfMonth`);
     for (let i of daysOfMonth) {
         let index = i.attributes.dayOfWeek.value;
         data[index] = i.value;
     }
-    console.log("data: "); //---------------------------------
-    console.log(data); //-----------------------------------
     return data;
 }
 
@@ -276,8 +297,9 @@ function setRow(button) {
         .catch((error) => console.error(error));
 }
 
+
 //Automatic refresh
 window.onload = () => {
-    startGetMedication()
+    startGetMedication();
 }
 

@@ -3,7 +3,7 @@ let dataJSON = JSON.parse(data);
 
 //Create dynamic medicine table till 10 rows
 let tbodyMedIntakes = document.querySelector("#tbodyMedIntakes");
-let numTrMedMax = 10
+let numTrMedMax = 20;
 for (let i = 0; i < numTrMedMax; i++) {
     let trMed = createAnyElement("tr");
     tbodyMedIntakes.appendChild(trMed);
@@ -17,7 +17,7 @@ for (let i = 0; i < numTrMedMax; i++) {
     for (aBoxName in boxNameMed) {
         let tdMed = createAnyElement("td", {
             name: aBoxName,
-            class: "box tdMEd text-end",
+            class: "box tdMed text-end",
         });
         // tdMed.innerHTML = dataJSON[aBoxName];
         trMed.appendChild(tdMed);
@@ -60,7 +60,7 @@ function fillRowWithHeartEmoji(thSelected) {
     }
     //Put the astronaut into the correct td //TODO!!!
     if (timeOfDay == "Reggeli" && thSelected == "th#rowMorning") {
-        let indexX = dataJSON.idTime - 7; // TODO: make it dynamic by html element attributums
+        let indexX = dataJSON.idTime % 7; // TODO: make it dynamic by html element attributums
         thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
     }
     if (timeOfDay == "Esti" && thSelected == "th#rowEvening") {
