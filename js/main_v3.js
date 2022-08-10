@@ -12,7 +12,7 @@ const keysTimeOfDay = {
 }
 
 const keysMedicine = {
-    id: '',
+    // id: '',
     medicineName: '', dose: '', unit: '', pieces: '', piecesUnit: ''
 };
 
@@ -40,7 +40,7 @@ function startGetMedication() {
         .catch(err => console.error(err));
 }
 
-document.querySelector("#getDataButton").addEventListener("click", startGetMedication);
+// document.querySelector("#getDataButton").addEventListener("click", startGetMedication);
 
 
 //Fill table with server data.
@@ -56,7 +56,7 @@ function fillDataTable(data, tableID) {
     let tBody = createAnyElement('tbody');
     for (let dayData of data) {
         let divDay = createAnyElement("div", {
-            class: "table",
+            class: "day",
         });
         let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
         createDay(dayData, divDay, plusButton, tBody);
@@ -86,7 +86,7 @@ function createAndFillRow(dayData, tr, keys, div) {
         if (k !== "timeOfDayDTOs" && k !== "id") {
             let td = createAnyElement("td");
             let input = createAnyElement("input", {
-                class: `form-control time ${k} ${dayData.dayOfWeek}`,
+                class: `form-control form-control-lg text-primary time ${k} ${dayData.dayOfWeek}`,
                 value: dayData[k],
                 name: k
             });
@@ -125,7 +125,7 @@ function fillTimeOfDayRow(dayData, keys, div, subData) {
             if (m !== "medicineDTOs") {
                 let td = createAnyElement("td");
                 let input = createAnyElement("input", {
-                    class: `form-control medicine${i} ${m} ${dayData.dayOfWeek}`,
+                    class: `form-control text-info ${m} ${dayData.dayOfWeek}`,
                     value: dayData[subData][i][m],
                     name: `${m}Med`
                 });
@@ -143,13 +143,18 @@ function fillTimeOfDayRow(dayData, keys, div, subData) {
 }
 
 function fillRow(objectOfData, keys, div) {
-    let trAny = createAnyElement("tr");
+    let trAny = createAnyElement("tr", {
+        class: "medicine"
+    });
     for (k in keys) {
         let inputAny = createAnyElement("input", {
-            class: "form-control",
+            class: `form-control medicine ${k}`,
+            name: k,
             value: objectOfData[k]
         });
-        let tdAny = createAnyElement("td");
+        let tdAny = createAnyElement("td", {
+            class: "medicine"
+        });
         tdAny.appendChild(inputAny);
         trAny.appendChild(tdAny);
     }

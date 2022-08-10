@@ -1,12 +1,32 @@
 .container {
-  margin-top: 20px;
+  margin-top: 4rem;
 }
 
-.table {
+.day {
   vertical-align: text-bottom;
   border-color: whitesmoke;
+  margin-bottom: 4rem;
 }
 
 .inputName {
   color: cornflowerblue;
+}
+
+.medicine input {
+  background-color: aliceblue;
+}
+
+/* Note: */
+.day:nth-child(2n) .medicine input {
+  background-color: #8f99d312;
+}
+
+.day:nth-child(2n+1) .medicine input {
+  background-color: #aee7ef47;
+}
+
+input.form-control.medicine.dose,
+input.form-control.medicine.pieces,
+.timeOfDayEng {
+  text-align: end;
 }

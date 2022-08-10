@@ -29,8 +29,6 @@ for (let i = 0; i < numTrMedMax; i++) {
     tbodyMedIntakes.appendChild(trMed);
 }
 
-
-
 fillMedRow(dataJSON);
 
 //Collect elements (mainly "td"s) marked "box" class and insert data from weeklyMedIntake.html by the correct keys
