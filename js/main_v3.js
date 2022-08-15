@@ -1,13 +1,13 @@
 //Keys of data table
 const keys = {
-    id: '', dayEng: '', empty1: '', empty2: '', empty3: '',
+    id: '', dayHu: '', empty1: '', year: '', month: '', dayOfMonth: '',
     // dayOfWeek: '', year: '', month: '', dayOfMonth: '', timeOfDay: '',
     timeOfDayDTOs: []
 };
 
 const keysTimeOfDay = {
     // id: '', 
-    timeOfDayEng: '', hour: '', empty1: '', empty2: '',
+    empty1: '', timeOfDayHu: '', empty2: '', empty3: '', hour: '',
     medicineDTOs: []
 }
 
@@ -83,7 +83,7 @@ function createDay(dayData, divDay, tBody) {
 
 function fillDayRow(dayData, tr, keys, divDay) {
     for (let k in keys) {
-        if (k !== "timeOfDayDTOs" && k !== "id") {
+        if (k !== "timeOfDayDTOs") {
             let td = createAnyElement("td");
             let input = createAnyElement("input", {
                 class: `form-control form-control-lg ${k} forDayDataSearching`,
@@ -91,19 +91,15 @@ function fillDayRow(dayData, tr, keys, divDay) {
                 name: k
             });
             switch (k) {
-                case "idTime":
-                    input.setAttribute("idTime", dayData.id);
-                    input.setAttribute("value", dayData.id);
-                    input.setAttribute("readonly", true);
+                case "id":
+                    input.classList.add("d-none");
                     break;
-                case "dayOfWeek":
-                    input.setAttribute("readonly", true);
+                case "dayHu":
+                case "dayEng":
+                    input.setAttribute("name", "dayOfWeek");
                     break;
                 case "dayOfMonth":
                     input.setAttribute("dayOfWeek", `weekDay${dayData.id}`);
-                    break;
-                case "timeOfDay":
-                    input.setAttribute("readonly", true);
                     break;
             };
             if (k.slice(0, 5) == "empty") {
@@ -139,6 +135,12 @@ function fillTimeOfDayRow(dayData, keys, divDay, subData) {
                     value: dayData[subData][i][m],
                     name: `${m}Med`
                 });
+                switch (m) {
+                    case "timeOfDayHu":
+                    case "timeOfDayEng":
+                        input.setAttribute("name", "timeOfDay");
+                        break;
+                };
                 td.appendChild(input);
                 trMedicine.appendChild(td);
                 trMedicine.appendChild(btnGroup);
@@ -255,16 +257,13 @@ function getDayData(trTimeOfDay) {
             dataForEnvelope[inputElementsFromDayOfWeekRow[i].name] = inputElementsFromDayOfWeekRow[i].value;
         }
     }
-    dataForEnvelope["timeOfDay"] = {};
-
     let inputElementsFromTimeOfDayRow = trTimeOfDay.querySelectorAll('input');
     for (let i = 0; i < inputElementsFromTimeOfDayRow.length; i++) {
         if (inputElementsFromTimeOfDayRow[i].value !== "undefined") {
-            dataForEnvelope.timeOfDay[inputElementsFromTimeOfDayRow[i].name] = inputElementsFromTimeOfDayRow[i].value;
+            dataForEnvelope[inputElementsFromTimeOfDayRow[i].name] = inputElementsFromTimeOfDayRow[i].value;
         }
     }
-    dataForEnvelope.timeOfDay["medicines"] = [];
-
+    dataForEnvelope["medicines"] = [];
     let arrayOfMedicineRows = trTimeOfDay.nextSibling.children;
     for (trMedicine of arrayOfMedicineRows) {
         inputsElementsFromMedicineRow = trMedicine.querySelectorAll('input');
@@ -272,7 +271,11 @@ function getDayData(trTimeOfDay) {
         for (let i = 0; i < inputsElementsFromMedicineRow.length; i++) {
             medicineObject[inputsElementsFromMedicineRow[i].name] = inputsElementsFromMedicineRow[i].value;
         }
-        dataForEnvelope.timeOfDay.medicines.push(medicineObject);
+        dataForEnvelope.medicines.push(medicineObject);
+    }
+    let inputElementsFromDayOfMonthColumn = document.querySelectorAll(".dayOfMonth");
+    for (let i = 0; i < inputElementsFromDayOfMonthColumn.length; i++) {
+        dataForEnvelope[`weekDay${i}`] = inputElementsFromDayOfMonthColumn[i].value;
     }
     return dataForEnvelope;
 }

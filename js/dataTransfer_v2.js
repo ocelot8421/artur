@@ -3,4 +3,3 @@ function takeDataFromOpenSite(dataJson) {
   sessionStorage.setItem('transferedDatas', dataJson);
   window.open(`envelope_v2.html`);
 }
-

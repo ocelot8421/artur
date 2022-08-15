@@ -13,9 +13,18 @@
 }
 
 .tdMed {
-  padding-left: 5px;
+  padding-left: 10px;
+  text-align: end;
 }
 
 .tdTime {
   padding-left: 5px;
+}
+
+.monthAboveTimeTable {
+  margin-top: 5mm;
+}
+
+div.timeOfDay {
+  margin-bottom: 5mm;
 }

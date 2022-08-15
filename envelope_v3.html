@@ -13,18 +13,17 @@
 
 <body>
     <div id="paper">
-        <div id="mező">
-            <div class="row">
+        <div>
+            <div class="row timeOfDay">
                 <div class="col-6"></div>
                 <div class="col-3">
-                    <b id="dayEng" class="box">
-                        Nap hiányzik
+                    <b id="dayOfWeek" class="box">
+                        missing day of week
                     </b>
                 </div>
-                <div class="col-3" font-weight="bold">
-                    <!-- <b>Esti</b> -->
+                <div class="col-3">
                     <b id="timeOfDay" class="box">
-                        hiányzó napszak
+                        missing time of day
                     </b>
                 </div>
             </div>
@@ -34,17 +33,15 @@
                     <table>
                         <tbody>
                             <tr>
-                                <th>2022.</th>
-                                <th id="month" class="box tdTime">Hónap hiányzik</th>
-                                <th id="dayOfMonth" class="box tdTime">Nap hiányzik</th>
-                                <th id="hour" class="box tdTime">missing hour</th>
+                                <th id="year" class="box tdTime">missing year</th>
+                                <th id="month" class="box tdTime">missing month</th>
+                                <th id="dayOfMonth" class="box tdTime">missing dayOfMonth</th>
+                                <th id="hourMed" class="box tdTime">missing hour</th>
                             </tr>
                         </tbody>
                     </table>
                     <table>
-                        <tbody id="tbodyMedIntakes">
-
-                        </tbody>
+                        <tbody id="intakes"> </tbody>
                     </table>
                 </div>
             </div>
@@ -68,13 +65,13 @@
                         <tbody class="text-center">
                             <tr>
                                 <td id="rowDay">nap</td>
+                                <td id="weekDay0" class="box">hiányzó dátum</td>
                                 <td id="weekDay1" class="box">hiányzó dátum</td>
                                 <td id="weekDay2" class="box">hiányzó dátum</td>
                                 <td id="weekDay3" class="box">hiányzó dátum</td>
                                 <td id="weekDay4" class="box">hiányzó dátum</td>
                                 <td id="weekDay5" class="box">hiányzó dátum</td>
                                 <td id="weekDay6" class="box">hiányzó dátum</td>
-                                <td id="weekDay7" class="box">hiányzó dátum</td>
                             </tr>
                             <tr>
                                 <th scope="row" id="rowMorning">Reg.</th>
