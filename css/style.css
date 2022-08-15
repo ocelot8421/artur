@@ -1,5 +1,10 @@
 .container {
   margin-top: 4rem;
+  max-width: 800px;
+}
+
+td.medicine:first-child {
+  min-width: 200px;
 }
 
 .day {
@@ -12,9 +17,6 @@
   color: cornflowerblue;
 }
 
-.medicine input {
-  background-color: aliceblue;
-}
 
 /* Note: */
 .day:nth-child(2n) .medicine input {
@@ -22,11 +24,36 @@
 }
 
 .day:nth-child(2n+1) .medicine input {
-  background-color: #aee7ef47;
+  /* background-color: #aee7ef47; */
+  background-color: #ccedf347;
+
 }
 
 input.form-control.medicine.dose,
 input.form-control.medicine.pieces,
 .timeOfDayEng {
   text-align: end;
+}
+
+.day:nth-child(2n+1) input {
+  color: #0dcaf0;
+}
+
+.day:nth-child(2n) input {
+  color: #b56f6f;
+}
+
+button.btn.btn-pdf {
+  background-color: #8f99d39f;
+  border-color: #8f99d39f;
+  color: black;
+  box-shadow: chartreuse;
+}
+
+td.empty {
+  visibility: hidden;
+}
+
+td.dayOfWeek {
+  text-align: right;
 }

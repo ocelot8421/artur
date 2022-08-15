@@ -1,7 +1,12 @@
 let data = sessionStorage.getItem('transferedDatas');
 let dataJSON = JSON.parse(data);
 
-//Create dynamic medicine table till 10 rows
+console.log("data: ");
+console.log(data);
+console.log("dataJSON:");
+console.log(dataJSON);
+
+//Create medicine table below date
 let tbodyMedIntakes = document.querySelector("#tbodyMedIntakes");
 let numTrMedMax = 20;
 for (let i = 0; i < numTrMedMax; i++) {
@@ -34,11 +39,11 @@ fillMedRow(dataJSON);
 //Collect elements (mainly "td"s) marked "box" class and insert data from weeklyMedIntake.html by the correct keys
 function fillMedRow(data) {
     let index = "box";
-    let inputs = document.querySelectorAll(`.${index}`);
-    for (let key of inputs) {
+    let boxes = document.querySelectorAll(`.${index}`);
+    for (let box of boxes) {
         for (let aData in data) {
-            if (key.id == aData) {
-                key.innerHTML = data[aData];
+            if (box.id == aData) {
+                box.innerHTML = data[aData];
             }
         }
     }
