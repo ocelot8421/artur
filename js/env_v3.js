@@ -2,10 +2,7 @@ let data = sessionStorage.getItem('transferedDatas');
 let dataJSON = JSON.parse(data);
 keysMedicine = { pieces: '', piecesUnit: '', dose: '', unit: '', medicineName: '' }
 
-
 fillBoxes(dataJSON);
-
-
 
 let tbodyIntakes = document.querySelector("#intakes");
 for (medicineObject of dataJSON.medicines) {
@@ -20,7 +17,6 @@ for (medicineObject of dataJSON.medicines) {
     }
     tbodyIntakes.appendChild(trIntake);
 }
-
 
 function fillBoxes(data) {
     let index = "box";
@@ -46,11 +42,11 @@ function fillRowWithHeartEmoji(thSelected) {
         thSiblings[index].innerHTML = '<i class="fa fa-heart-o" aria-hidden="true"></i>';
     }
     //Put the astronaut into the correct td //TODO!!!
-    if (timeOfDay == "Reggeli" && thSelected == "th#rowMorning") {
+    if ((timeOfDay == "Reggeli" || timeOfDay == "Morning") && thSelected == "th#rowMorning") {
         let indexX = dataJSON.id;
         thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
     }
-    if (timeOfDay == "Esti" && thSelected == "th#rowEvening") {
+    if ((timeOfDay == "Esti" || timeOfDay == "Evening") && thSelected == "th#rowEvening") {
         let indexX = dataJSON.id;
         thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
     }

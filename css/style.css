@@ -3,8 +3,8 @@
   max-width: 800px;
 }
 
-td.medicine:first-child {
-  min-width: 200px;
+td.medicine:nth-child(2) {
+  width: 33%;
 }
 
 .day {
@@ -31,7 +31,7 @@ td.medicine:first-child {
 
 input.form-control.medicine.dose,
 input.form-control.medicine.pieces,
-.timeOfDayEng {
+.timeOfDay {
   text-align: end;
 }
 
