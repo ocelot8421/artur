@@ -13,12 +13,6 @@ td.medicine:nth-child(2) {
   margin-bottom: 4rem;
 }
 
-.inputName {
-  color: cornflowerblue;
-}
-
-
-/* Note: */
 .day:nth-child(2n) .medicine input {
   background-color: #8f99d312;
 }
@@ -35,6 +29,7 @@ input.form-control.medicine.pieces,
   text-align: end;
 }
 
+/* Text Color of content of input boxes */
 .day:nth-child(2n+1) input {
   color: #0dcaf0;
 }
@@ -43,11 +38,17 @@ input.form-control.medicine.pieces,
   color: #b56f6f;
 }
 
+.day input.newRowBox {
+  color: rgba(0, 0, 0, 0.26);
+  font-style: italic;
+}
+
+
 button.btn.btn-pdf {
   background-color: #8f99d39f;
   border-color: #8f99d39f;
   color: black;
-  box-shadow: chartreuse;
+  /* box-shadow: chartreuse; */
 }
 
 td.empty {

@@ -10,7 +10,7 @@ const keysMedicine = {
     id: '', medicineName: '', dose: '', unit: '', pieces: '', piecesUnit: ''
 };
 
-const keysEmptyRow = { idMed: '', medicine: '', pieces: '', dose: '' }
+const keysEmptyRow = { id: '', medicineName: '', dose: '', unit: '', pieces: '', piecesUnit: '' }
 
 
 // Get data from server.
@@ -48,11 +48,12 @@ function fillDataTable(data, tableID) {
     refreshedBody.parentNode.replaceChild(tBody, refreshedBody);
 }
 
-//Create a table for data of day of week
+//Create the table for the day of week
 function createDay(dayData, divDay, tBody) {
-    let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
+    // let plusButton = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
     let refreshButton = createButton("btn btn-info", "setRow(this)", '<i class="fa fa-refresh" aria-hidden="true"></i>');
-    let bGroupDay = [plusButton, refreshButton];
+    // let bGroupDay = [plusButton, refreshButton];
+    let bGroupDay = [refreshButton];
     let tr = createAnyElement("tr", {
         class: `time`
     });
@@ -60,8 +61,8 @@ function createDay(dayData, divDay, tBody) {
     divDay.appendChild(tr);
     fillDayRow(dayData, tr, keysDayOfWeek, divDay);
     tr.appendChild(btnGroup);
-    let bFunction = "createEmptyIntakeRow(this.parentElement.parentElement.parentElement.parentElement, this)";
-    plusButton.setAttribute("onclick", bFunction);
+    // let bFunction = "createEmptyIntakeRow(this.parentElement.parentElement.parentElement.parentElement, this)";
+    // plusButton.setAttribute("onclick", bFunction);
     tBody.appendChild(divDay);
 }
 
@@ -146,15 +147,7 @@ function fillTimeOfDayRow(dayData, keys, divDay, subData) {
                 for (objectMedicine of dayData[subData][i][m]) {
                     fillMedicineRows(objectMedicine, keysMedicine, divMedicine)
                 }
-                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~1
-                // let btnPlusMedicine = createPlusButton("btn btn-primary", '<i class="fa fa-solid fa-plus" aria-hidden="true"></i>');
-                // let btnGroupMedicineDivEnd = [btnPlusMedicine];
-                // let btnGroupPlusMedicineRow = createButtonGroup(btnGroupMedicineDivEnd, dayData.medicineDTOs);
-                // let trForPlusMEdicineBtn = createAnyElement("tr");
-                // trForPlusMEdicineBtn.appendChild(btnGroupPlusMedicineRow);
-                // divMedicine.appendChild(trForPlusMEdicineBtn);
-
-                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~1~~~~~~~~~~~~~~~~~~~~~~~~~~~11
+                createEmptyIntakeRow(divMedicine); //----------------------------------
                 divTimeOfDay.appendChild(divMedicine);
             }
         }
@@ -184,7 +177,7 @@ function fillMedicineRows(objectOfData, keys, divMedicine) {
         tr.appendChild(td);
     }
     //Create delete button at the end of medicine row
-    let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
+    let deleteButton = createButton("btn", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
     let btnGroup = [deleteButton];
     let delBtn = createButtonGroup(btnGroup);
     tr.appendChild(delBtn);
@@ -200,34 +193,37 @@ function createPlusButton(bClass, bIcon) {
     return button;
 }
 
+//The empty row below the medicines. By this the new data can be pushed into medicine intakes database.
 function createEmptyIntakeRow(div) {
-    let numIdMed = div.lastChild.querySelector(".form-control").value;
-    let numRow = parseInt(numIdMed) + 1;
-    let deleteButton = createButton("btn btn-danger", "delRow(this)", '<i class="fa fa-trash" aria-hidden="true"></i>');
-    let trEmpty = createEmptyRow(deleteButton);
-    for (const key in keysEmptyRow) {
+    let saveButton = createButton("btn", "setRow(this)", '<i class="fa fa-save" aria-hidden="true"></i>');
+    let divBtn = createAnyElement("div", {
+        class: `btn btn-group btn-time`
+    });
+    divBtn.appendChild(saveButton);
+    let tdBtn = createAnyElement("td", { class: "dayOfWeek" });
+    tdBtn.appendChild(divBtn);
+    let trEmpty = createEmptyMedicineRow();
+    for (const k in keysEmptyRow) {
         let tdEmpty = createAnyElement("td");
-        let inputEmpty = createAnyElement("input", {
-            class: "form-control inputName",
-            name: key + numRow,
-            value: key + numRow
+        let input = createAnyElement("input", {
+            class: `form-control newRowBox`,
+            name: k,
+            value: "new " + k
         });
-        if (key == "idMed") {
-            inputEmpty.setAttribute("value", numRow);
-        }
-        tdEmpty.appendChild(inputEmpty);
+        switch (k) {
+            case "id":
+                input.classList.add("d-none");
+                break;
+        };
+        tdEmpty.appendChild(input);
         trEmpty.appendChild(tdEmpty);
     }
+    trEmpty.appendChild(tdBtn);
     div.appendChild(trEmpty);
 }
 
-function createEmptyRow(button) {
-    let divButton = createAnyElement("div");
-    divButton.appendChild(button);
-    let tdButton = createAnyElement("td");
-    tdButton.appendChild(divButton);
-    let trEmpty = createAnyElement("tr");
-    trEmpty.appendChild(tdButton);
+function createEmptyMedicineRow() {
+    let trEmpty = createAnyElement("tr", { class: "medicine" });
     return trEmpty;
 }
 
