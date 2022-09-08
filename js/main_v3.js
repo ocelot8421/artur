@@ -216,6 +216,7 @@ function createEmptyIntakeRow(div) {
         switch (k) {
             case "id":
                 input.classList.add("d-none");
+                input.setAttribute("value", 99)
                 break;
         };
         tdEmpty.appendChild(input);
@@ -310,8 +311,8 @@ function collectConnections(tr) {
     intakeID += (parseFloat(conDayOfWeek) * 1000);
     let conTimeOfDay = tr.parentElement.previousElementSibling.firstChild.firstChild.value;
     intakeID += (parseFloat(conTimeOfDay) * 100);
-    // let conMedIntake = tr.firstChild.firstChild.value;
-    // intakeID += parseFloat(conMedIntake);
+    let conMedIntake = tr.firstChild.firstChild.value;
+    intakeID += parseFloat(conMedIntake);
 
     console.log("collectConnections - medicine:");
     console.log(tr);
@@ -320,7 +321,7 @@ function collectConnections(tr) {
     connectionIntake.dayOfWeek = conDayOfWeek;
     connectionIntake.date = conDayOfWeek; // temporary. it will need modification at annual diary!!!!!
     connectionIntake.timeOfDay = conTimeOfDay;
-    // connectionIntake.medicine = conMedIntake;
+    // connectionIntake.medicineID = conMedIntake;
     let medicineName = tr.querySelector('input[name="medicineName"]').value;
     let dose = tr.querySelector('input[name="dose"]').value;
     let unit = tr.querySelector('input[name="unit"]').value;
@@ -354,9 +355,9 @@ function delRow(button) {
     };
     fetch(`http://localhost:8080/medicines/del/${data.id}`, fetchOptions)
         .then(response => response.json())
-        .catch(error => console.error(error))
-        .then(() => startGetMedication())
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
+        .finally(() => startGetMedication());
+    // startGetMedication();
 }
 
 function pdfEnvilope(button) {
@@ -383,9 +384,9 @@ function setRow(button) {
     };
     fetch(`http://localhost:8080/medicines/put/${data.id}`, fetchOptions)
         .then(response => response.json())
-        .catch(error => console.error(error))
-        .then(() => startGetMedication())
-        .catch((error) => console.error(error));
+        .catch((error) => console.error(error))
+        .finally(() => startGetMedication());
+    // startGetMedication();
 }
 
 //Automatic refresh
