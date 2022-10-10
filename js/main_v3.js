@@ -1,6 +1,11 @@
 //Keys to fill rows
 const keysDayOfWeek = {
-    id: '', dayHu: '', year: '', month: '', dayOfMonth: '',
+    id: '', dayHu: '',
+    year: '',
+    month: '',
+    dayOfMonth: '',
+    // month: '',
+    // year: '',
     timeOfDayDTOs: []
 };
 const keysTimeOfDay = {
@@ -313,10 +318,6 @@ function collectConnections(tr) {
     intakeID += (parseFloat(conTimeOfDay) * 100);
     let conMedIntake = tr.firstChild.firstChild.value;
     intakeID += parseFloat(conMedIntake);
-
-    console.log("collectConnections - medicine:");
-    console.log(tr);
-
     connectionIntake.id = intakeID;
     connectionIntake.dayOfWeek = conDayOfWeek;
     connectionIntake.date = conDayOfWeek; // temporary. it will need modification at annual diary!!!!!
@@ -332,11 +333,6 @@ function collectConnections(tr) {
     connectionIntake.medicine.unit = unit;
     connectionIntake.medicine.pieces = pieces;
     connectionIntake.medicine.piecesUnit = piecesUnit;
-
-
-    console.log("connectionIntake:"); // put -----------------------------------
-    console.log(connectionIntake);
-
     return connectionIntake;
 }
 
@@ -371,8 +367,6 @@ function pdfEnvilope(button) {
 function setRow(button) {
     let tr = button.parentElement.parentElement.parentElement;
     let data = collectConnections(tr);
-    console.log("data:");
-    console.log(data); // put -------------------------
     let fetchOptions = {
         method: "PUT",
         mode: "cors",
