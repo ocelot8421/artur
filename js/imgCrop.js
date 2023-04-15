@@ -4,7 +4,7 @@ function cropImg() {
 
     var image = new Image();
     // image.src = "assets/img/man-bodybuilder.jpg";
-    image.src = "assets/img/hedgehog.jpg";
+    image.src = "assets/img/duck.jpg";
 
     image.onload = function () {
         // body builder img:

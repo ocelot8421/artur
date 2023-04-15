@@ -33,6 +33,7 @@ function fillBoxes(data) {
 //Fill rows with hearth emoji
 let timeOfDay = document.querySelector("#timeOfDay").innerHTML;
 fillRowWithHeartEmoji(`th#rowMorning`);
+fillRowWithHeartEmoji(`th#rowNoon`);
 fillRowWithHeartEmoji(`th#rowEvening`);
 
 function fillRowWithHeartEmoji(thSelected) {
@@ -43,6 +44,10 @@ function fillRowWithHeartEmoji(thSelected) {
     }
     //Put the astronaut into the correct td //TODO!!!
     if ((timeOfDay == "Reggeli" || timeOfDay == "Morning") && thSelected == "th#rowMorning") {
+        let indexX = dataJSON.id;
+        thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
+    }
+    if ((timeOfDay == "Déli" || timeOfDay == "Noon") && thSelected == "th#rowNoon") {
         let indexX = dataJSON.id;
         thSiblings[indexX].innerHTML = '<i class="fa fa-grav" aria-hidden="true"></i>';
     }
